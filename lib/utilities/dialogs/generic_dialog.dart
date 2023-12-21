@@ -13,8 +13,17 @@ Future<T?> showGenericDialog<T>({
     context: context,
     builder: (context) {
       return AlertDialog(
-        title: Text(title),
-        content: Text(content),
+        backgroundColor: Colors.black,
+        title: Text(title,
+            style: Theme.of(context)
+                .textTheme
+                .bodyMedium!
+                .copyWith(color: Colors.white)),
+        content: Text(content,
+            style: Theme.of(context)
+                .textTheme
+                .bodyMedium!
+                .copyWith(color: Colors.white)),
         actions: options.keys.map((optionTitle) {
           final value = options[optionTitle];
           return TextButton(
@@ -25,7 +34,11 @@ Future<T?> showGenericDialog<T>({
                   Navigator.of(context).pop();
                 }
               },
-              child: Text(optionTitle));
+              child: Text(optionTitle,
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyMedium!
+                      .copyWith(color: Colors.white)));
         }).toList(),
       );
     },

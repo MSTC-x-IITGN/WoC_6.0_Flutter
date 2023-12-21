@@ -1,53 +1,100 @@
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/material.dart';
-import 'package:stocks_app/firebase_options.dart';
-import 'package:stocks_app/views/home_view.dart';
-import 'package:stocks_app/views/login_view.dart';
-import 'package:stocks_app/views/register_view.dart';
+import 'package:flutter/services.dart';
+import 'app.dart';
+import 'views/dash_screen.dart';
+import 'views/settings_view.dart';
 
+final userName = FirebaseAuth.instance.currentUser!.displayName;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  runApp(const MyApp());
+  await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
+  await FirebaseCrashlytics.instance.setUserIdentifier(userName!);
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final ThemeData theme = ThemeData();
 
-  // This widget is the root of your application.
+  MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Stocks App',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const HomePage(),
-      routes: {
-        '/login': (context) => const LoginView(),
-        '/register': (context) => const RegisterView(),
-      },
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (ctx) => Articles()),
+        ChangeNotifierProvider(create: (ctx) => Securities()),
+      ],
+      child: MaterialApp(
+        title: "News+",
+        debugShowCheckedModeBanner: false,
+        theme: theme.copyWith(
+          canvasColor: const Color.fromARGB(255, 0, 0, 0),
+          primaryColor: Colors.black,
+          appBarTheme: theme.appBarTheme.copyWith(
+            iconTheme: const IconThemeData(color: Colors.white),
+            color: Colors.black,
+            elevation: 0.0,
+            centerTitle: true,
+            titleTextStyle: const TextStyle(
+              color: Colors.white,
+              fontFamily: "Poppins",
+              fontWeight: FontWeight.w600,
+              fontStyle: FontStyle.italic,
+              fontSize: 22,
+            ),
+          ),
+          textTheme: theme.textTheme.copyWith(
+            bodyLarge: const TextStyle(
+              fontFamily: "Poppins",
+              fontSize: 15,
+              color: Colors.black,
+            ),
+            bodyMedium: const TextStyle(
+              fontFamily: "Poppins",
+              fontSize: 18,
+              color: Colors.black,
+            ),
+            displayLarge: const TextStyle(
+              fontFamily: "Poppins",
+              color: Colors.black,
+              fontStyle: FontStyle.italic,
+              fontWeight: FontWeight.bold,
+              fontSize: 26,
+            ),
+            displayMedium: const TextStyle(
+              fontFamily: "Poppins",
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+              fontSize: 22,
+            ),
+            labelLarge: const TextStyle(
+              fontFamily: "Poppins",
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          colorScheme: theme.colorScheme
+              .copyWith(
+                secondary: Colors.white,
+              )
+              .copyWith(error: const Color(0xFFf73131)),
+        ),
+        home: StreamBuilder<User?>(
+          stream: FirebaseAuth.instance.authStateChanges(),
+          builder: (ctx, authSnapshot) {
+            if (authSnapshot.hasData) {
+              return const TabsScreen();
+            } else {
+              return const LoginView();
+            }
+          },
+        ),
+        routes: {
+          '/login': (_) => const LoginView(),
+          TabsScreen.routeName: (_) => const TabsScreen(),
+          '/settings': (_) => const SettingsScreen(),
+        },
       ),
     );
   }

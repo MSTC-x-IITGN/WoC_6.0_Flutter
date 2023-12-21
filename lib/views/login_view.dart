@@ -82,7 +82,7 @@ class _LoginViewState extends State<LoginView> {
                             context, 'Please verify your email');
                       } else {
                         Navigator.pushNamedAndRemoveUntil(
-                            context, registerRoute, (route) => false);
+                            context, homeRoute, (route) => false);
                       }
                     } on FirebaseAuthException catch (e) {
                       if (e.code == 'user-not-found') {
