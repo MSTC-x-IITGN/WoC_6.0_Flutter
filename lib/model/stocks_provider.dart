@@ -11,13 +11,13 @@ class Securities extends ChangeNotifier {
   final db = Localstore.instance;
 
   final _url = Uri.parse(
-    "https://yh-finance-complete.p.rapidapi.com/dailyGainers",
-    // "https://yh-finance.p.rapidapi.com/market/get-trending-tickers",
+    // "https://yh-finance-complete.p.rapidapi.com/dailyGainers",
+    "https://yh-finance.p.rapidapi.com/market/get-trending-tickers",
   );
 
   final _headers = {
-    "X-RapidAPI-Host": "yh-finance-complete.p.rapidapi.com",
-    // "X-RapidAPI-Host": "yh-finance.p.rapidapi.com",
+    // "X-RapidAPI-Host": "yh-finance-complete.p.rapidapi.com",
+    "X-RapidAPI-Host": "yh-finance.p.rapidapi.com",
     "X-RapidAPI-Key": 'e5a760876bmshab31f9c1f57436cp120edcjsnff8dcd08346a',
   };
 
@@ -43,8 +43,8 @@ class Securities extends ChangeNotifier {
         headers: _headers,
       );
       //Alternate better api but not working for some unknown reason it worked before
-      // final extractedData = json.decode(response.body)['finance']['result'][0];
-      final extractedData = json.decode(response.body);
+      final extractedData = json.decode(response.body)['finance']['result'][0];
+      // final extractedData = json.decode(response.body);
       final assetData =
           List<Map<dynamic, dynamic>>.from(extractedData['quotes']);
 

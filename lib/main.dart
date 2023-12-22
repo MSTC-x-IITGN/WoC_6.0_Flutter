@@ -8,8 +8,8 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
-  await FirebaseCrashlytics.instance.setUserIdentifier(userName!);
+  // await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
+  // await FirebaseCrashlytics.instance.setUserIdentifier(userName!);
   runApp(MyApp());
 }
 
@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (ctx) => Securities()),
       ],
       child: MaterialApp(
-        title: "News+",
+        title: "Stock News",
         debugShowCheckedModeBanner: false,
         theme: theme.copyWith(
           canvasColor: const Color.fromARGB(255, 0, 0, 0),
@@ -94,6 +94,7 @@ class MyApp extends StatelessWidget {
           '/login': (_) => const LoginView(),
           TabsScreen.routeName: (_) => const TabsScreen(),
           '/settings': (_) => const SettingsScreen(),
+          '/register': (_) => const RegisterView(),
         },
       ),
     );

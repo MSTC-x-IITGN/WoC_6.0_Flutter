@@ -3,6 +3,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:stocks_app/views/dash_screen.dart';
 import '../constants/routes.dart';
 import '../firebase_options.dart';
 import '../utilities/dialogs/error_dialog.dart';
@@ -82,7 +83,7 @@ class _LoginViewState extends State<LoginView> {
                             context, 'Please verify your email');
                       } else {
                         Navigator.pushNamedAndRemoveUntil(
-                            context, homeRoute, (route) => false);
+                            context, TabsScreen.routeName, (route) => false);
                       }
                     } on FirebaseAuthException catch (e) {
                       if (e.code == 'user-not-found') {
