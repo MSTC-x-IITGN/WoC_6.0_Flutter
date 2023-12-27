@@ -178,6 +178,13 @@ class _RegisterViewState extends State<RegisterView> {
                               UserCredential.user!.uid, email, name, phone);
                           Navigator.pushNamedAndRemoveUntil(
                               context, loginRoute, (route) => false);
+
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                  'Verification email sent to ${UserCredential.user!.email}!'),
+                            ),
+                          );
                         } on FirebaseAuthException catch (e) {
                           if (e.code == 'weak-password') {
                             showErrorDialog(

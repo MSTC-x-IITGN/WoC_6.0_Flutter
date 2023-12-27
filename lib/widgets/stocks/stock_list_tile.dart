@@ -1,4 +1,3 @@
-import 'package:stocks_app/constants/routes.dart';
 import 'package:stocks_app/views/purchase_view.dart';
 
 import '../../app.dart';
