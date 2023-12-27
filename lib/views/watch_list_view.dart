@@ -50,7 +50,6 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
       physics: const ScrollPhysics(),
       child: Column(
         children: [
-          const SearchBar(),
           FutureBuilder(
             future: _securitiesFuture,
             builder: (ctx, snapshot) {

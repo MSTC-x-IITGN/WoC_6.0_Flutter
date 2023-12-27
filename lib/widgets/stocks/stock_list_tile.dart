@@ -1,3 +1,6 @@
+import 'package:stocks_app/constants/routes.dart';
+import 'package:stocks_app/views/purchase_view.dart';
+
 import '../../app.dart';
 
 class SecurityListTile extends StatefulWidget {
@@ -121,6 +124,15 @@ class _SecurityListTileState extends State<SecurityListTile> {
               : Container()
         ],
       ),
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => BuySellStockPage(
+                stockSymbol: widget.ticker, price: widget.price),
+          ),
+        );
+      },
     );
   }
 }

@@ -1,15 +1,13 @@
 import 'package:flutter/services.dart';
+import 'package:stocks_app/profile/MyPortFolio.dart';
 import 'app.dart';
 import 'views/dash_screen.dart';
-import 'views/settings_view.dart';
 
 final userName = FirebaseAuth.instance.currentUser!.displayName;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  // await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
-  // await FirebaseCrashlytics.instance.setUserIdentifier(userName!);
   runApp(MyApp());
 }
 
@@ -93,8 +91,8 @@ class MyApp extends StatelessWidget {
         routes: {
           '/login': (_) => const LoginView(),
           TabsScreen.routeName: (_) => const TabsScreen(),
-          '/settings': (_) => const SettingsScreen(),
           '/register': (_) => const RegisterView(),
+          '/portfolio': (_) => const MyPortfolio(),
         },
       ),
     );

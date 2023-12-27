@@ -32,20 +32,20 @@ class _ArticleWebViewState extends State<ArticleWebView> {
     }
   }
 
-  Future<void> _toggleSave(String id) async {
-    if (_isSaved) {
-      await Provider.of<Articles>(context, listen: false)
-          .removeSavedArticle(id);
-      setState(() {
-        _isSaved = false;
-      });
-    } else {
-      await Provider.of<Articles>(context, listen: false).saveArticle(id);
-      setState(() {
-        _isSaved = true;
-      });
-    }
-  }
+  // Future<void> _toggleSave(String id) async {
+  //   if (_isSaved) {
+  //     await Provider.of<Articles>(context, listen: false)
+  //         .removeSavedArticle(id);
+  //     setState(() {
+  //       _isSaved = false;
+  //     });
+  //   } else {
+  //     await Provider.of<Articles>(context, listen: false).saveArticle(id);
+  //     setState(() {
+  //       _isSaved = true;
+  //     });
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -87,18 +87,19 @@ class _ArticleWebViewState extends State<ArticleWebView> {
                     ),
                   ),
                   onPressed: () => _launchURL(widget.articleUrl),
-                  child: const Text("Open in Browser"),
+                  child: const Text("Open in Browser",
+                      style: TextStyle(color: Colors.white)),
                 ),
-                IconButton(
-                  onPressed: () => _toggleSave(widget.id),
-                  color: Colors.white,
-                  icon: Icon(
-                    _isSaved
-                        ? CustomIcons.bookmark
-                        : CustomIcons.bookmark_empty,
-                    size: 24,
-                  ),
-                ),
+                // IconButton(
+                //   onPressed: () => _toggleSave(widget.id),
+                //   color: Colors.white,
+                //   icon: Icon(
+                //     _isSaved
+                //         ? CustomIcons.bookmark
+                //         : CustomIcons.bookmark_empty,
+                //     size: 24,
+                //   ),
+                // ),
               ],
             ),
           ),

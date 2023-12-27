@@ -1,6 +1,8 @@
+import 'package:stocks_app/model/firebase_user_provider.dart';
+import 'package:stocks_app/model/user.dart';
+import 'package:stocks_app/profile/profile_view.dart';
+
 import '../app.dart';
-import '../constants/routes.dart';
-import '../menu_action.dart';
 import 'watch_list_view.dart';
 
 class TabsScreen extends StatefulWidget {
@@ -17,10 +19,13 @@ class _TabsScreenState extends State<TabsScreen> {
 
   @override
   void initState() {
+    var name = FirebaseAuth.instance.currentUser?.displayName;
+    name ??= "User";
     _pages = [
-      {"page": const HomeScreen(), "title": "Stock News"},
-      {"page": const MarketsScreen(), "title": "Stock Market"},
       {"page": const WatchlistScreen(), "title": "Watchlist"},
+      {"page": const MarketsScreen(), "title": "Stock Market"},
+      {"page": const HomeScreen(), "title": "Stock News"},
+      {"page": MyProfile(name), "title": "Profile"},
     ];
     super.initState();
   }
@@ -37,24 +42,6 @@ class _TabsScreenState extends State<TabsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        actions: [
-          PopupMenuButton<MenuAction>(onSelected: (value) async {
-            switch (value) {
-              case MenuAction.logout:
-                final shouldLogout = await showLogOutDialog(context);
-                if (shouldLogout && context.mounted) {
-                  await FirebaseAuth.instance.signOut();
-                  Navigator.of(context).pushAndRemoveUntil(
-                      loginRoute as Route<Object?>, (route) => false);
-                }
-            }
-          }, itemBuilder: (context) {
-            return const [
-              PopupMenuItem<MenuAction>(
-                  value: MenuAction.logout, child: Text('Log Out')),
-            ];
-          })
-        ],
         title: Text(_pages[_selectedIndex]["title"] as String),
       ),
       body: IndexedStack(
@@ -73,12 +60,16 @@ class _TabsScreenState extends State<TabsScreen> {
         selectedItemColor: Colors.white,
         currentIndex: _selectedIndex,
         items: const [
-          BottomNavigationBarItem(icon: Icon(CustomIcons.home), label: "News"),
-          BottomNavigationBarItem(icon: Icon(CustomIcons.bar), label: "Stocks"),
           BottomNavigationBarItem(
               icon: Icon(CustomIcons.eye_outline),
               activeIcon: Icon(CustomIcons.eye),
               label: "Watchlist"),
+          BottomNavigationBarItem(icon: Icon(CustomIcons.bar), label: "Stocks"),
+          BottomNavigationBarItem(icon: Icon(Icons.newspaper), label: "News"),
+          BottomNavigationBarItem(
+            icon: Icon(CustomIcons.home),
+            label: "Profile",
+          )
         ],
       ),
     );
